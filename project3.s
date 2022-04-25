@@ -18,6 +18,11 @@ sub_a:
 	addi $sp, $sp, -4		# create space in stack for return address
 	sw $ra, 0($sp)			# store return address into stack
 	
+	la $t0 ($a0)			# save input string to new register
+	loop:					# loop for separating string into substrings
+	la $t1 0($t0)			# load char into temp var
+	beq $t1, 59, sub_program
+	
 
 
 # takes in each substring and loops through the characters to evaluate the result
