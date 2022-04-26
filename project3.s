@@ -33,8 +33,7 @@ sub_a:
 	sub_program:
 	la $a1, ($t2)				# stores length of substring in $a1
 	la $a0, ($t0)				# load substring in $a0
-	li $t0, 0					# load '\n' char in $t0
-	sb $t0, 0($a0)				# store $t0 at the end of the substr in $a0
+	sb $zero, 0($a0)			# store '\n' at the end of the substr in $a0
 	sub $a0, $a0, $a1			# put substr pointer at the beginning at the end of the word
 	jal sub_b					# goes into sub_B passing input substring
 								# print out value with ',' after return
