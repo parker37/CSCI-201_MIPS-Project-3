@@ -29,9 +29,15 @@ sub_a:
 	sub_program:
 	la $a1, ($t2)				# stores length of substring in $a1
 	jal sub_b					# goes into sub_B passing input substring
+	j print
 	j loop
 	
 	return:
+	la $a1, ($t2)				# stores length of substring in $a1
+	jal sub_b					# goes into sub_B passing input substring
+	j print
+	
+	print:
 
 # takes in each substring and loops through the characters to evaluate the result
 # a0: substring
