@@ -19,11 +19,17 @@ sub_a:
 	sw $ra, 0($sp)			# store return address into stack
 	
 	la $t0 ($a0)			# save input string to new register
+	li $t2, 0				# count var for substring length
 	loop:					# loop for separating string into substrings
 	la $t1 0($t0)			# load char into temp var
 	beq $t1, 59, sub_program
 	
-
+	
+	sub_program:
+	jal sub_b				# goes into sub_B passing input substring
+	j loop
+	
+	return:
 
 # takes in each substring and loops through the characters to evaluate the result
 # returns decimal value or error msg 
