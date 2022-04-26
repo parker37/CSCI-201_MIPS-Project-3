@@ -20,11 +20,14 @@ sub_a:
 	
 	la $t0 ($a0)				# save input string to new register
 	loop:						# loop for separating string into substrings
+	la $s0, input				# space for substring
 	li $t2, 0					# count var for substring length
-	la $t1 0($t0)				# load char into temp var
+	lb $t1 0($t0)				# load char into temp var
 	beq $t1, 0, return			# if '\n' jump to sub_b then return back to main
 	beq $t1, 59, sub_program	# if ';' jump to sub_b to get value
 	addi $t2, $t2, 1			# increment count
+	sb $t1, 0($s0)				# store char into substring register
+	addi $s0, $s0, 1			# moves pointer to next byte
 	
 	sub_program:
 	la $a1, ($t2)				# stores length of substring in $a1
