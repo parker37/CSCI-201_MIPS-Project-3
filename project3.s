@@ -70,6 +70,8 @@ sub_a:
 # a1: length of string
 # returns decimal value or error msg 
 sub_b:
+	bgt $a0, 4, formatError
+	beqz $a0, formatError
 	li $t0, 0			# counter
 	la $t1, ($a0)			# exponent
 	subi $t1, $t1, 1 		# fix 0 index
@@ -126,6 +128,7 @@ sub_b:
 		j next
 
 formatError:
+	add $s2, $s2, $a0
 	li $v0, 4			# load sys code for printing strings
 	la $a0, errorMsg		# load error message for incorrect input
 	syscall
