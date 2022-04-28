@@ -13,6 +13,7 @@ main:
 	syscall					# performs action: take in user input
 	
 	jal sub_a				# goes into sub_a passing input string
+	j end
 
 
 # takes in the string and sends substrings to sub_b to get the decimal value or error msg back
@@ -24,8 +25,8 @@ sub_a:
 	la $s0, ($a0)				# save input string to new register
 	move $s2, $a0				# save input string to new register
 	li $s1, 0					# count var for substring length
-	loop:						# loop for separating string into substrings
 	li $t3, 0
+	loop:						# loop for separating string into substrings
 	lb $t1 0($s0)				# load char into temp var
 	beq $t1, 0, return			# if '\n' jump to sub_b then return back to main
 	beq $t1, 59, sub_program	# if ';' jump to sub_b to get value
@@ -52,13 +53,16 @@ sub_a:
 	li $s1, 0
 	addi $s0, $s0, 1			# moves to next character in input string
 	addi $s2, $s2, 1			# moves to next character in input string
+	li $t3, 0
 	j loop
 	
 	return:
 	subi $s1, $s1, 1			# increment count
 	la $a0, ($s1)				# stores length of substring in $a1
 	jal sub_b					# goes into sub_B passing input substring
-	j end							# print out value after return
+	lw $ra 0($sp)
+	addi $sp, $sp, 4
+	jr $ra
 	
 
 # takes in each substring and loops through the characters to evaluate the result
@@ -116,18 +120,10 @@ sub_b:
 		jr $ra
 		
 	exponent:				# loop that acts as a exponent multiplier
-		la $t4, ($t1)
 		li $t5, 34
-		li $t6, 1
-		expLoop:
-			ble $t4, 0, out
-			mul $t6, $t6, $t5
-			subi $t4, $t4, 1
-			j expLoop
-		out:
-			mul $t4, $t6, $t3
-			add $t0, $t0, $t4
-			j next
+		mul $t0, $t0, $t5
+		add $t0, $t0, $t3
+		j next
 
 formatError:
 	li $v0, 4			# load sys code for printing strings
